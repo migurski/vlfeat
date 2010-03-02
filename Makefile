@@ -150,6 +150,7 @@ Linux_i386_ARCH             := glx
 Linux_i686_ARCH             := glx
 Linux_unknown_ARCH          := glx
 Linux_x86_64_ARCH           := a64
+Linux_armv5tel_ARCH         := arm
 
 UNAME := $(shell uname -sm)
 ARCH  ?= $($(shell echo "$(UNAME)" | tr \  _)_ARCH)
@@ -314,6 +315,20 @@ C_CFLAGS        += -DVL_SUPPORT_SSE2
 C_CFLAGS        += $(call if-like,%_sse2,$*,-msse2)
 LDFLAGS         += -lm -Wl,--rpath,\$$ORIGIN/
 MEX_FLAGS       += -lm -largeArrayDims
+MEX_CFLAGS      +=
+MEX_LDFLAGS     += -Wl,--rpath,\\\$$ORIGIN/
+endif
+
+# SheevaPlug ARM
+ifeq ($(ARCH),armv5tel)
+BINDIR          := $(VLDIR)/bin/arm
+MEX_SUFFIX      := mexglx
+DLL_SUFFIX      := so
+C_CFLAGS        += -D__LITTLE_ENDIAN__ -std=c99
+C_CFLAGS        += -march=armv5te
+C_CFLAGS        += $(call if-like,%_sse2,$*,-msse2)
+LDFLAGS         += -lm -Wl,--rpath,\$$ORIGIN/
+MEX_FLAGS       += -lm
 MEX_CFLAGS      +=
 MEX_LDFLAGS     += -Wl,--rpath,\\\$$ORIGIN/
 endif
