@@ -320,13 +320,12 @@ MEX_LDFLAGS     += -Wl,--rpath,\\\$$ORIGIN/
 endif
 
 # SheevaPlug ARM
-ifeq ($(ARCH),armv5tel)
+ifeq ($(ARCH),arm)
 BINDIR          := $(VLDIR)/bin/arm
 MEX_SUFFIX      := mexglx
 DLL_SUFFIX      := so
 C_CFLAGS        += -D__LITTLE_ENDIAN__ -std=c99
 C_CFLAGS        += -march=armv5te
-C_CFLAGS        += $(call if-like,%_sse2,$*,-msse2)
 LDFLAGS         += -lm -Wl,--rpath,\$$ORIGIN/
 MEX_FLAGS       += -lm
 MEX_CFLAGS      +=
@@ -688,7 +687,7 @@ post-doc: doc
 # Auto-deps
 ifeq ($(filter doc clean archclean distclean info \
                bin-release bin-commit bin-merge bin-dist, $(MAKECMDGOALS)),)
-include $(dll_dep) $(bin_dep) $(mex_dep)
+include $(dll_dep) $(bin_dep)
 endif
 
 # Makefile for documentation
